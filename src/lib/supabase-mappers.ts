@@ -1,4 +1,4 @@
-import { Customer, Quote, QuoteItem } from "./types";
+import { Customer, Product, Quote, QuoteItem, TelegramOrder } from "./types";
 
 export interface CustomerRow {
   id: string;
@@ -51,5 +51,47 @@ export function mapQuote(row: QuoteRow): Quote {
     status: row.status,
     createdAt: row.quote_date,
     items: (row.quote_items ?? []).map(mapQuoteItem),
+  };
+}
+
+export interface ProductRow {
+  id: string;
+  name: string;
+  unit_price: number | string;
+}
+
+export function mapProduct(row: ProductRow): Product {
+  return {
+    id: row.id,
+    name: row.name,
+    unitPrice: Number(row.unit_price),
+  };
+}
+
+export interface TelegramOrderRow {
+  id: string;
+  chat_id: number;
+  username: string | null;
+  first_name: string | null;
+  product_name: string;
+  quantity: number | string;
+  unit_price: number | string;
+  total: number | string;
+  status: TelegramOrder["status"];
+  created_at: string;
+}
+
+export function mapTelegramOrder(row: TelegramOrderRow): TelegramOrder {
+  return {
+    id: row.id,
+    chatId: row.chat_id,
+    username: row.username,
+    firstName: row.first_name,
+    productName: row.product_name,
+    quantity: Number(row.quantity),
+    unitPrice: Number(row.unit_price),
+    total: Number(row.total),
+    status: row.status,
+    createdAt: row.created_at,
   };
 }

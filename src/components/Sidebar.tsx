@@ -1,17 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 const links = [
   { href: "/", label: "Dashboard" },
   { href: "/customers", label: "Customers" },
   { href: "/quotes/new", label: "Create Quote" },
   { href: "/quotes", label: "Quote Records" },
+  { href: "/products", label: "Products" },
+  { href: "/orders", label: "Orders" },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  if (pathname === "/login") return null;
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  }
 
   return (
     <aside className="flex w-60 shrink-0 flex-col border-r border-zinc-800 bg-zinc-950">
@@ -40,7 +52,12 @@ export default function Sidebar() {
       </nav>
       <div className="border-t border-zinc-800 px-5 py-4">
         <p className="text-xs font-medium text-zinc-300">Boss Account</p>
-        <p className="text-xs text-zinc-500">Sales Team</p>
+        <button
+          onClick={handleLogout}
+          className="mt-1 text-xs text-zinc-500 hover:text-zinc-300"
+        >
+          Log out
+        </button>
       </div>
     </aside>
   );

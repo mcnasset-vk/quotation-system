@@ -3,7 +3,7 @@ import { supabase } from "./supabase";
 type Method = "GET" | "POST" | "PATCH" | "DELETE";
 
 export async function callEdgeFunction<T>(
-  name: "customers" | "quotes" | "telegram-order",
+  name: "customers" | "quotes" | "telegram-order" | "products",
   options: { method: Method; body?: Record<string, unknown> }
 ): Promise<T> {
   const { data, error } = await supabase.functions.invoke(name, options);
